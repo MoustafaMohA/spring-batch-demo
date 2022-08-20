@@ -44,12 +44,22 @@ public class StepTransitionConfiguration {
                 }).build();
     }
 
+
     @Bean
     public Job transitionJobSimpleNext() {
         return jobBuilderFactory.get("transitionStep")
                 .start(step1())
-                .next(step2())
-                .next(step3())
+                .on("COMPLETED").to(step2())
+                .from(step2()).on("COMPLETED").to(step3())
+                .from(step3()).end()
                 .build();
     }
+//    @Bean
+//    public Job transitionJobSimpleNext() {
+//        return jobBuilderFactory.get("transitionStep")
+//                .start(step1())
+//                .next(step2())
+//                .next(step3())
+//                .build();
+//    }
 }
